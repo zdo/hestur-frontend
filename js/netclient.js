@@ -1,3 +1,8 @@
+const ResponseId = {
+    Ping: 1,
+    Map: 2
+}
+
 class NetClient {
     constructor(game) {
         this.game = game
@@ -22,22 +27,12 @@ class NetClient {
     }
 
     _handleEvent(responseId, dataView) {
-        if (responseId == 2) {
-            var width = dataView.getUint32(0)
-            var height = dataView.getUint32(4)
-            console.log(width, height)
-
-            // var tileMap = Phaser.Tilemap(this, )
-
-            // for (var x = 0; x < width; ++x) {
-            //     for (var y = 0; y < height; ++y) {
-            //         var i = x + y * width
-            //         var cellType = dv.getUint8(2 + i)
-            //         this.add.image(x * 32,
-            //             16 + y * 32,
-            //             cellType == 0 ? 'earth' : 'grass')
-            //     }
-            // }
+        switch (responseId) {
+        case ResponseId.Ping:
+            console.log("ping")
+        case ResponseId.Map:
+            console.log(this, "map")
+            this.game.reloadMap(dataView)
         }
     }
 }
