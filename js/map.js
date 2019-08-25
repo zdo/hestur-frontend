@@ -23,16 +23,8 @@ class Map {
         this.cachedTexturesMap = {}
 
         this.cellSize = 32
-        this.texSize = this.cellSize * 32
+        this.texSize = this.cellSize * 10
         this.cellsPerTex = this.texSize / this.cellSize
-
-
-        // var r = this.game.scene.add.rectangle(0, 0, 1500, 1500, 0xff0000)
-        // r.setOrigin(0)
-        
-        // r = this.game.scene.add.rectangle(300, 300, 3600, 100, 0x0000ff)
-        // r.setOrigin(0)
-        // this.game.scene.add.rectangle(1000, 500, 6000, 1500, 0x00ff00)
     }
 
     reload(dataView) {
@@ -61,9 +53,6 @@ class Map {
         var index = x + y * this.width
         var byteOffset = this.cellByteSize * index
         var cellType = this.cellsDataView.getUint8(byteOffset)
-        if (y == 3) {
-        console.log(x, y, cellType)
-        }
         return cellType
     }
 
@@ -73,8 +62,7 @@ class Map {
         var maxX = Math.floor((offsetX + width) / this.texSize)
         var maxY = Math.floor((offsetY + height) / this.texSize)
 
-        console.log("Redraw map", offsetX, offsetY, width, height, "-", minX, maxX)
-
+        // console.log("Redraw map", offsetX, offsetY, width, height, "-", minX, maxX)
 
         for (var x = minX; x <= maxX; ++x) {
             for (var y = minY; y <= maxY; ++y) {
@@ -85,11 +73,6 @@ class Map {
         this.cachedTextures.forEach(tex => {
             tex.drawCallsWithoutBeingUsed += 1
         })
-
-        if (offsetX > 0) {
-            // throw 2
-        }
-        
     }
 
     _textureKey(x, y) {
@@ -121,8 +104,6 @@ class Map {
 
             console.log("Draw texture", texX, texY)
             tex.texture.clear();
-
-            // tex.texture.add.rectangle(0, 0, this.texSize -1, this.texSize-1, "ff0000");
 
             for (var y = 0; y < this.cellsPerTex; ++y) {
                 for (var x = 0; x < this.cellsPerTex; ++x) {
@@ -159,11 +140,7 @@ class Map {
 
         tex.drawCallsWithoutBeingUsed = 0
 
-        // console.log("Draw texture", texX, texY, offsetX, offsetY)
         tex.texture.x = offsetX
         tex.texture.y = offsetY
-
-        
-
     }
 }

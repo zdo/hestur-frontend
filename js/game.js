@@ -1,6 +1,24 @@
+class Character {
+    constructor(id, game) {
+        this.id = id
+        this.game = game
+        console.log("Create character", id)
+        this.sprite = game.scene.add.sprite(0, 0, "horse")
+    }
+
+    setPosition(x, y)  {
+        this.sprite.x = this.game.map.cellSize * x
+        this.sprite.y = this.game.map.cellSize * y
+        this.sprite.depth = 1 + y // above map hence "+ 1"
+    }
+}
+
 class Game {
     constructor() {
         this._createGame()
+        
+        this.characters = {}
+        this.props = {}
     }
 
     _createGame() {
@@ -27,6 +45,7 @@ class Game {
 
         this.scene.load.image('grass', 'assets/grass.png')
         this.scene.load.image('earth', 'assets/earth.png')
+        this.scene.load.image('horse', 'assets/horse-0.png')
     }
 
     _onGameCreate() {
@@ -42,16 +61,16 @@ class Game {
         var x = camera.scrollX
 
         if (this.cursors.left.isDown) {
-            x += 10
-        }
-        if (this.cursors.right.isDown) {
             x -= 10
         }
+        if (this.cursors.right.isDown) {
+            x += 10
+        }
         if (this.cursors.up.isDown) {
-            y += 10
+            y -= 10
         }
         if (this.cursors.down.isDown) {
-            y -= 10
+            y += 10
         }
 
         camera.scrollX = x
@@ -71,5 +90,12 @@ class Game {
 
     reloadMap(dataView) {
         this.map.reload(dataView)
+    }
+    
+    obtainCharacter(id) {
+        if (!this.characters[id]) {
+            this.characters[id] = new Character(id, this)
+        }
+        return this.characters[id]
     }
 }
